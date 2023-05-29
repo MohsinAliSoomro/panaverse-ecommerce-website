@@ -36,8 +36,8 @@ const PRODUCT_DATA = [
 export default function Home() {
   return (
     <main className="container mx-auto ">
-      <div className="flex items-center justify-between place-content-start">
-        <div className="flex items-start flex-col space-y-6 w-1/2">
+      <div className="flex items-center justify-between flex-wrap-reverse">
+        <div className="flex items-start flex-col space-y-6 w-full lg:w-1/2 ">
           <span className="bg-blue-600/10 p-2 rounded-lg text-blue-800 px-4 font-bold">
             Sale 70%
           </span>
@@ -53,14 +53,14 @@ export default function Home() {
             <span> Start Shopping</span>
           </button>
         </div>
-        <div className="w-1/2">
-          <div className="bg-[#FFECE3] w-[600px] h-[600px] rounded-full relative">
+        <div className="w-full lg:w-1/2">
+          <div className="bg-[#FFECE3] mx-auto w-[300px] h-[300px] lg:w-[600px] lg:h-[600px] rounded-full relative">
             <Image
               src="/girl.webp"
               alt="product"
               width={500}
               height={500}
-              className=" object-cover w-[650px h-[650px] absolute -top-5 left-14"
+              className=" object-cover w-[300px] h-[300px] lg:w-[650px] lg:h-[650px] absolute -top-5 left-14"
             />
           </div>
         </div>
@@ -70,10 +70,10 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-center">
           Our Promotions Events
         </h1>
-        <div className="flex gap-8 h-full">
-          <div className="w-1/2 h-auto">
-            <div className="bg-[#D6D6D8] flex rounded-lg ">
-              <div className="w-1/2 justify-center flex items-start ml-8 flex-col">
+        <div className="flex gap-8 h-full flex-wrap md:flex-nowrap">
+          <div className="w-full lg:w-1/2 h-auto">
+            <div className="bg-[#D6D6D8] flex rounded-lg py-6 lg:p-0">
+              <div className="w-full lg:w-1/2 justify-center flex items-start ml-8 flex-col">
                 <h1 className="font-bold text-4xl">GET UP TO 60%</h1>
                 <p className="">For the summer season</p>
               </div>
@@ -95,7 +95,7 @@ export default function Home() {
               </button>
             </div>
           </div>
-          <div className="w-1/2 flex gap-6">
+          <div className="w-full lg:w-1/2 flex flex-wrap md:flex-nowrap gap-6">
             <div className="bg-[#EFE1C1] w-full rounded-lg px-4 pt-4">
               <p>Flex Sweatshirt</p>
               <p>
