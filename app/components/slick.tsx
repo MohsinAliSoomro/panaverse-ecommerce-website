@@ -2,7 +2,6 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Image from "next/image";
 import SlideItem from "./SlideItem";
 
 const settings = {
@@ -44,18 +43,22 @@ const PRODUCT_DATA = [
     price: "$195",
   },
 ];
-export default function MainSlider() {
+interface IProps {
+  data: unknown;
+}
+export default function MainSlider({ data }: IProps) {
   return (
     <div>
       <Slider {...settings} className="w-full overflow-hidden">
-        {PRODUCT_DATA.map((item) => (
-          <SlideItem
-            image={item.image}
-            name={item.name}
-            price={item.price}
-            key={item.name}
-          />
-        ))}
+        {Array.isArray(data) &&
+          data.map((item: any) => (
+            <SlideItem
+              image={item.mainImage}
+              name={item?.title}
+              price={item?.price}
+              key={item.title}
+            />
+          ))}
       </Slider>
     </div>
   );

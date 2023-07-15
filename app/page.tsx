@@ -4,14 +4,22 @@ import Events from "./components/Events";
 import ProductSlider from "./components/ProductSlider";
 import MaterialInfo from "./components/MaterialInfo";
 import NewsLater from "./components/commons/NewsLetter";
-import Footer from "./components/commons/Footer";
+import { createClient } from "next-sanity";
+import { SANITY_CONFIG } from "@/lib/sanityConfig";
+const client = createClient(SANITY_CONFIG);
 
-export default function Home() {
+async function getData() {
+  const res = await client.fetch(`*[_type == "products"]`);
+  return res;
+}
+
+export default async function Home() {
+  const data = await getData();
   return (
     <Container>
       <Hero />
       <Events />
-      <ProductSlider />
+      <ProductSlider data={data} />
       <MaterialInfo />
       <NewsLater />
     </Container>
