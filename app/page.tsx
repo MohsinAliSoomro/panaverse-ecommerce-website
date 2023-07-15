@@ -9,7 +9,14 @@ import { SANITY_CONFIG } from "@/lib/sanityConfig";
 const client = createClient(SANITY_CONFIG);
 
 async function getData() {
-  const res = await client.fetch(`*[_type == "products"]`);
+  const res = await client.fetch(`*[_type == "products"]{
+    _id,
+    title,
+    price,
+    slug,
+    mainImage,
+    categories[]->{title}
+  }`);
   return res;
 }
 

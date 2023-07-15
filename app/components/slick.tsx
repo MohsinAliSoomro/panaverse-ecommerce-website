@@ -47,6 +47,7 @@ interface IProps {
   data: unknown;
 }
 export default function MainSlider({ data }: IProps) {
+  console.log({data:JSON.stringify(data)})
   return (
     <div>
       <Slider {...settings} className="w-full overflow-hidden">
@@ -56,6 +57,7 @@ export default function MainSlider({ data }: IProps) {
               image={item.mainImage}
               name={item?.title}
               price={item?.price}
+              categories={item?.categories}
               key={item.title}
             />
           ))}
