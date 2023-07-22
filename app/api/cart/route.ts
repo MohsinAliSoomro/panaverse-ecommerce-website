@@ -1,5 +1,7 @@
+import { CartTable, db } from "@/lib/drizzleOrm";
 import { NextRequest, NextResponse } from "next/server";
 
 export function GET(request: NextRequest) {
-  return NextResponse.json({ message: "API CALL" });
+  const result = db.select().from(CartTable);
+  return NextResponse.json({ cart: result });
 }
