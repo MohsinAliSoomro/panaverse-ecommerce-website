@@ -1,5 +1,6 @@
 import { Store, Search, ShoppingCart } from "lucide-react";
 import Link from "next/link";
+import { SignInButton, auth, SignOutButton } from "@clerk/nextjs";
 const ROUTES = [
   {
     url: "/female",
@@ -18,7 +19,9 @@ const ROUTES = [
     name: "All Product",
   },
 ];
-export default function Navbar() {
+export default async function Navbar() {
+  const { userId } = auth();
+  console.log({ userId });
   return (
     <div className="container mx-auto flex justify-between items-center py-6">
       <Link href={"/"} className="flex items-center space-x-2">
@@ -42,15 +45,18 @@ export default function Navbar() {
           className="px-5 border rounded-lg border-gray-300 text-sm focus:border-none active:border-none"
         />
       </div>
-      <Link
-        href={"/user/cart"}
-        className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center flex relative"
-      >
-        <span className="absolute top-0 right-0 bg-orange-700 text-white rounded-full w-4 h-4 text-[10px] flex items-center justify-center">
-          0
-        </span>
-        <ShoppingCart size={20} className="" />
-      </Link>
+      <div className="flex items-center gap-3">
+        <Link
+          href={"/user/cart"}
+          className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center flex relative"
+        >
+          <span className="absolute top-0 right-0 bg-orange-700 text-white rounded-full w-4 h-4 text-[10px] flex items-center justify-center">
+            0
+          </span>
+          <ShoppingCart size={20} className="" />
+        </Link>
+        {userId ? <SignOutButton /> : <SignInButton />}
+      </div>
     </div>
   );
 }

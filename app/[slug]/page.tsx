@@ -65,7 +65,7 @@ export default async function Products({
     <Container>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-flow-row gap-2">
         {Array.isArray(data) &&
-          Array.isArray(data[0].products) &&
+          Array.isArray(data[0]?.products) &&
           data[0]?.products.map((item: unknown, index: number) => {
             return <Product item={item} key={index} />;
           })}
