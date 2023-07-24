@@ -17,7 +17,7 @@ export default function Product({ item }: { item: any }) {
           width: "100%",
           height: "20rem",
           objectFit: "contain",
-        }} // layout="responsive" prior to Next 13.0.0
+        }}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         alt={item.title}
         //  placeholder="blur"

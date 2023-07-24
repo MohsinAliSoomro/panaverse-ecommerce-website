@@ -1,34 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+#### Dino Market:
+ An online marketplace offering dinosaur products. Securely authenticate with Clerk, manage content effortlessly with Sanity, and enjoy fast performance with Next.js, Vercel, and PostgreSQL. Accept payments seamlessly with Stripe for a smooth shopping experience.
 
-## Getting Started
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+# POSTGRES TABLE
+- Step 1
+` Order Table `
+```
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  userId TEXT NOT NULL,
+  itemCount INTEGER NOT NULL,
+  total INTEGER NOT NULL,
+  createdAt TIMESTAMP NOT NULL DEFAULT NOW()
+);
+```
+- Step 2
+` CartItem Table `
+```
+CREATE TABLE cartitem (
+  id SERIAL PRIMARY KEY,
+  productId TEXT NOT NULL,
+  userId TEXT NOT NULL,
+  quantity INTEGER NOT NULL,
+  price INTEGER NOT NULL,
+  createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+  orderId INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE
+);
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Delete Table
+```
+DROP TABLE IF EXISTS cartitem
+DROP TABLE IF EXISTS orders
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Feed
+```
+INSERT INTO "orders" (userId, itemCount, total, createdAt)
+VALUES ('user_1', 3, 2500, NOW());
+```
+```
+INSERT INTO cartitem (productId, quantity, price, orderId, userId, createdAt)
+VALUES
+  ('product_1', 2, 1000, 1, 'user_1', NOW()),
+  ('product_2', 3, 1500, 1, 'user_1', NOW()),
+  ('product_3', 1, 500, 1, 'user_2', NOW()),
+  ('product_4', 5, 2000, 1, 'user_3', NOW()),
+  ('product_5', 4, 1800, 1, 'user_3', NOW());
+```

@@ -20,8 +20,7 @@ const ROUTES = [
   },
 ];
 export default async function Navbar() {
-  const { userId } = auth();
-  console.log({ userId });
+  // const { userId } = auth();
   return (
     <div className="container mx-auto flex justify-between items-center py-6">
       <Link href={"/"} className="flex items-center space-x-2">
@@ -55,7 +54,7 @@ export default async function Navbar() {
           </span>
           <ShoppingCart size={20} className="" />
         </Link>
-        {userId ? <SignOutButton /> : <SignInButton />}
+        <SignOutButton /> <SignInButton />
       </div>
     </div>
   );
