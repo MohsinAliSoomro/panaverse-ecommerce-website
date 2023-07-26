@@ -1,10 +1,10 @@
 const getData = async () => {
   try {
-    const response = await fetch("http:/localhost:3000/api/cart", {
+    const response = await fetch("http://localhost:3000/api/cart", {
       method: "GET",
     });
     const result = await response.json();
-    console.log({result });
+    console.log({ result });
     return result;
   } catch (error) {
     console.log({ error });
