@@ -1,7 +1,7 @@
 "use client";
 import { Store, Search, ShoppingCart } from "lucide-react";
 import Link from "next/link";
-import { SignInButton, SignOutButton } from "@clerk/nextjs";
+import { SignInButton, SignOutButton, useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -27,6 +27,8 @@ const ROUTES = [
 export default function Navbar() {
   const [search, setSearch] = useState("");
   const router = useRouter();
+  const { userId } = useAuth();
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     router.push(`/search/${search}`);
@@ -67,7 +69,7 @@ export default function Navbar() {
           </span>
           <ShoppingCart size={20} className="" />
         </Link>
-        <SignOutButton /> <SignInButton />
+        {userId ? <SignOutButton /> : <SignInButton />}
       </div>
     </div>
   );
