@@ -1,6 +1,10 @@
+"use client";
 import { Store, Search, ShoppingCart } from "lucide-react";
 import Link from "next/link";
-import { SignInButton, auth, SignOutButton } from "@clerk/nextjs";
+import { SignInButton, SignOutButton } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+
 const ROUTES = [
   {
     url: "/female",
@@ -19,8 +23,14 @@ const ROUTES = [
     name: "All Product",
   },
 ];
-export default async function Navbar() {
-  // const { userId } = auth();
+
+export default function Navbar() {
+  const [search, setSearch] = useState("");
+  const router = useRouter();
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push(`/search/${search}`);
+  };
   return (
     <div className="container mx-auto flex justify-between items-center py-6">
       <Link href={"/"} className="flex items-center space-x-2">
@@ -33,17 +43,20 @@ export default async function Navbar() {
           </Link>
         ))}
       </div>
-      <div className="relative">
+      <form onSubmit={handleSearchSubmit} className="relative">
         <Search
           size={14}
           className="absolute top-1 left-1 mt-[2px] text-gray-400"
         />
         <input
           type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          name="searchInput"
           placeholder="What you are looking for"
           className="px-5 border rounded-lg border-gray-300 text-sm focus:border-none active:border-none"
         />
-      </div>
+      </form>
       <div className="flex items-center gap-3">
         <Link
           href={"/user/cart"}
