@@ -18,10 +18,10 @@ export const OrderTable = pgTable(
   "orders",
   {
     id: serial("id").primaryKey(),
-    userId: text("userId").notNull(),
-    itemCount: integer("quantity").notNull(),
+    userId: text("userid").notNull(),
+    itemCount: integer("itemcount").notNull(),
     total: integer("total").notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    createdAt: timestamp("createdat").defaultNow().notNull(),
   },
   (order) => {
     return {
@@ -33,7 +33,7 @@ export const CartTable = pgTable(
   "cartitem",
   {
     id: serial("id").primaryKey(),
-    productId: text("product").notNull(),
+    productId: text("productId").notNull(),
     quantity: integer("quantity").notNull(),
     price: integer("price").notNull(),
     userId: text("userId").notNull(),
