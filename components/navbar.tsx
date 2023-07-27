@@ -3,7 +3,8 @@ import { Store, Search, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { SignInButton, SignOutButton, useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useId, useState } from "react";
+import { useCartStore } from "@/state/CartState";
 
 const ROUTES = [
   {
@@ -25,9 +26,15 @@ const ROUTES = [
 ];
 
 export default function Navbar() {
+  const { fetchCart, cartItems, carts } = useCartStore();
+  console.log({ cartItems });
   const [search, setSearch] = useState("");
   const router = useRouter();
   const { userId } = useAuth();
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,7 +72,7 @@ export default function Navbar() {
           className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center flex relative"
         >
           <span className="absolute top-0 right-0 bg-orange-700 text-white rounded-full w-4 h-4 text-[10px] flex items-center justify-center">
-            0
+            {cartItems}
           </span>
           <ShoppingCart size={20} className="" />
         </Link>

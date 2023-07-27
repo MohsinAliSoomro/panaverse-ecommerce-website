@@ -41,11 +41,30 @@ async function getData(category: string) {
   return res;
 }
 
-export default async function Products({
-  params,
-}: {
+// const addToCart = async () => {
+//   try {
+//     const response = await fetch("http://localhost:3000/api/cart", {
+//       method: "POST",
+//       body: JSON.stringify({
+//         productId: "asdf",
+//         quantity: "asdf",
+//         price: "asdf",
+//         userId: "asdf",
+//       }),
+//     });
+//     const result = await response.json();
+//     console.log({ result });
+//     return result;
+//   } catch (error) {
+//     console.log({ error });
+//     return error;
+//   }
+// };
+interface IProps {
   params: { slug: string };
-}) {
+}
+
+export default async function Products({ params }: IProps) {
   const data = await getData(params.slug);
 
   if (!data) {
