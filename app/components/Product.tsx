@@ -10,7 +10,7 @@ interface IProps {
 }
 export default function Product({ item }: IProps) {
   const { addToCart,carts } = useCartStore();
-  console.log({carts})
+
   const { userId } = useAuth();
   const imageProps = useNextSanityImage(configuredSanityClient, item.mainImage);
   return (

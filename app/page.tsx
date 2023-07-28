@@ -19,12 +19,6 @@ async function getData() {
   }`);
   return res;
 }
-interface IProduct {
-  productId: string;
-  quantity: number;
-  price: string;
-  userId: string;
-}
 
 export default async function Home() {
   const data = await getData();

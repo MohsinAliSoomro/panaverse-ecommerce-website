@@ -19,17 +19,20 @@ export async function addToCartAPI(data: Product) {
   }
 }
 
-export async function removeToCartAPI(id: string) {
+export async function removeToCartAPI(id: number) {
   try {
-    const response = await fetch("http://localhost:3000/api/cart", {
-      method: "DELETE",
-      body: JSON.stringify(id),
-    });
+    const response = await fetch(
+      `http://localhost:3000/api/cart?cartId=${id}`,
+      {
+        method: "DELETE",
+        // body: JSON.stringify(id),
+      }
+    );
     const result = await response.json();
-    console.log({ result });
+    console.log("removeToCartAPI", { result });
     return result;
   } catch (error) {
-    console.log({ error });
+    console.log("removeToCartAPI", { error });
     return error;
   }
 }
