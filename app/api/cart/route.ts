@@ -1,6 +1,6 @@
 import { CartTable, OrderTable, db } from "@/lib/drizzleOrm";
 import { getAuth } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -21,11 +21,16 @@ export async function POST(request: NextRequest) {
   const checkIfItemExists = await db
     .select()
     .from(CartTable)
-    .where(eq(CartTable.productId, productId))
-    .where(eq(CartTable.userId, userId as string));
+    .where(
+      and(
+        eq(CartTable.productId, productId),
+        eq(CartTable.userId, userId as string)
+      )
+    );
 
-  console.log({ checkIfItemExists });
-
+  if (checkIfItemExists.length > 0) {
+    return NextResponse.json({ exist: true });
+  }
   const response = await db
     .insert(CartTable)
     .values({
@@ -35,7 +40,6 @@ export async function POST(request: NextRequest) {
       userId: userId as string,
     })
     .returning();
-
   return NextResponse.json(response);
 }
 

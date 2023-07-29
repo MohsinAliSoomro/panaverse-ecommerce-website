@@ -11,10 +11,8 @@ export async function addToCartAPI(data: Product) {
       body: JSON.stringify(data),
     });
     const result = await response.json();
-    console.log({ result });
     return result;
   } catch (error) {
-    console.log({ error });
     return error;
   }
 }
@@ -25,14 +23,11 @@ export async function removeToCartAPI(id: number) {
       `http://localhost:3000/api/cart?cartId=${id}`,
       {
         method: "DELETE",
-        // body: JSON.stringify(id),
       }
     );
     const result = await response.json();
-    console.log("removeToCartAPI", { result });
     return result;
   } catch (error) {
-    console.log("removeToCartAPI", { error });
     return error;
   }
 }
@@ -43,10 +38,26 @@ export async function fetchUserCartAPI() {
       method: "GET",
     });
     const result = await response.json();
-    console.log({ result });
     return result;
   } catch (error) {
-    console.log({ error });
+    return error;
+  }
+}
+
+interface IOrder {
+  price: string;
+  quantity: number;
+}
+export async function buyOrder(data: IOrder[]) {
+  try {
+    const response = await fetch(`http://localhost:3000/api/order`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    window.open(result.url, "_blank");
+    return result;
+  } catch (error) {
     return error;
   }
 }

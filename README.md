@@ -23,6 +23,7 @@ CREATE TABLE cartitem (
   userId TEXT NOT NULL,
   quantity INTEGER NOT NULL,
   price INTEGER NOT NULL,
+  stripeProductId  TEXT NOT NULL,
   createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
   orderId INTEGER REFERENCES orders(id) ON DELETE CASCADE
 );

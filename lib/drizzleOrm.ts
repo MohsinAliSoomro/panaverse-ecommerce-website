@@ -37,6 +37,7 @@ export const CartTable = pgTable(
     quantity: integer("quantity").notNull(),
     price: integer("price").notNull(),
     userId: text("userid").notNull(),
+    stripeProductId: text("stripeproductid"),
     createdAt: timestamp("createdat").defaultNow().notNull(),
     orderId: integer("orderid").references(OrderTable.id),
   },

@@ -13,6 +13,7 @@ async function getData(title: string) {
       price,
       slug,
       mainImage,
+      stripeProductId,
       categories[]->{title}
     }`,
     { title: title.charAt(0).toUpperCase() + title.slice(1) }

@@ -14,7 +14,7 @@ export default function CartItem({ item, removeToCart }: IProps) {
     <div className="flex justify-between items-center my-2">
       <div className="flex ">
         <Image
-          {...imageProps}
+          {...imageProps as any}
           style={{
             width: "3rem",
             height: "3rem",

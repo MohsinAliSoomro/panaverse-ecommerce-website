@@ -25,6 +25,11 @@ export default defineType({
       },
     }),
     defineField({
+      name: "stripeProductId",
+      title: "StripeProductId",
+      type: "string",
+    }),
+    defineField({
       name: "mainImage",
       title: "Main image",
       type: "image",
