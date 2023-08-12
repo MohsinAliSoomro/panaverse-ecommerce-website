@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Dino Market",
-  description: "Dino Market to sell products",
+  description: "Dino Market to sell products for male female and kids",
 };
 
 export default function RootLayout({
