@@ -48,7 +48,7 @@ export async function DELETE(request: NextRequest) {
   console.log("API", id);
   const response = await db
     .delete(CartTable)
-    .where(eq(CartTable.id, id))
+    .where(eq(CartTable.id, Number(id)))
     .returning();
 
   console.log({ response });

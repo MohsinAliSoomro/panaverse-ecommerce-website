@@ -39,7 +39,7 @@ export const CartTable = pgTable(
     userId: text("userid").notNull(),
     stripeProductId: text("stripeproductid"),
     createdAt: timestamp("createdat").defaultNow().notNull(),
-    orderId: integer("orderid").references(OrderTable.id),
+    orderId: integer("orderid").references(() => OrderTable.id),
   },
   (cart) => {
     return {
