@@ -17,7 +17,7 @@ async function getData(category: string) {
           price,
           slug,
           mainImage,
-          stripeProductId
+          stripeProductId,
           categories[]->{title}
         }
       }`

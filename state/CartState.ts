@@ -69,7 +69,7 @@ export const useCartStore = create<ICart>((set) => ({
   },
   fetchCart: async () => {
     const response = await fetchUserCartAPI();
-    set({ cartItems: response.length, carts: response });
+    set({ cartItems: response?.length ?? 0, carts: response });
   },
   addToCart: async (data: IProduct) => {
     const response = await addToCartAPI(data);

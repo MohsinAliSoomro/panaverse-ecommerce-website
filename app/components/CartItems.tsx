@@ -13,7 +13,7 @@ export default function CartItems({}: IProps) {
     useCartStore();
 
   useEffect(() => {
-    if (carts.length && !cartItemProducts.length) {
+    if (Array.isArray(carts) && carts?.length && !cartItemProducts.length) {
       fetchCartItems(carts.map((i) => i.productId));
     }
   }, [carts]);

@@ -47,7 +47,7 @@ export default function Navbar() {
       </Link>
       <div>
         {ROUTES.map((item) => (
-          <Link href={item.url} className="px-4">
+          <Link href={item.url} key={item.name} className="px-4">
             {item.name}
           </Link>
         ))}
