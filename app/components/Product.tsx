@@ -3,7 +3,7 @@ import { useNextSanityImage } from "next-sanity-image";
 import Image from "next/image";
 import { configuredSanityClient } from "../lib/utils";
 import { Loader2Icon, ShoppingCart } from "lucide-react";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useClerk } from "@clerk/nextjs";
 import { useCartStore } from "../../state/CartState";
 import { useOrderStore } from "@/state/OrdetState";
 interface IProps {
@@ -14,6 +14,7 @@ export default function Product({ item }: IProps) {
   const { loading, buyOrder, priceId } = useOrderStore();
   const { userId } = useAuth();
   const imageProps = useNextSanityImage(configuredSanityClient, item.mainImage);
+  const clerk = useClerk();
   return (
     <div className="focus:border-none mx-10 relative bg-slate-50 p-2 rounded-md">
       <span className="absolute top-0 right-0 bg-slate-100-400 text-[8px] border border-slate-300 p-1">
@@ -34,21 +35,29 @@ export default function Product({ item }: IProps) {
         <p className="font-semibold">${item.price}</p>
         <div className="flex items-center justify-center gap-1">
           <button
-            onClick={() =>
+            onClick={() => {
+              if (!userId) {
+                clerk.openSignIn();
+                return;
+              }
               addToCart({
                 productId: item._id,
                 price: item.price,
                 quantity: 1,
                 userId: userId as string,
                 stripeProductId: item.stripeProductId,
-              })
-            }
+              });
+            }}
             className="bg-slate-100 border border-slate-300 p-1"
           >
             <ShoppingCart />
           </button>
           <button
             onClick={() => {
+              if (!userId) {
+                clerk.openSignIn();
+                return;
+              }
               buyOrder([{ price: item.stripeProductId, quantity: 1 }]);
             }}
             className="bg-slate-100 border border-slate-300 p-2 font-bold text-xs"

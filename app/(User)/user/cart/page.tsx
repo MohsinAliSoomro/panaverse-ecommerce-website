@@ -56,7 +56,6 @@ export default function Page() {
             }}
             className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600 relative"
           >
-             <Loader2Icon size={16} className="animate-spin absolute top-[0.60rem] left-20" />
             {loading ? (
               <span>
                 <Loader2Icon size={16} className="animate-spin" />

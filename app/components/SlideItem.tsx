@@ -4,7 +4,8 @@ import { Loader2Icon, ShoppingCart } from "lucide-react";
 import { configuredSanityClient } from "../lib/utils";
 import { useOrderStore } from "@/state/OrdetState";
 import { useCartStore } from "@/state/CartState";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useClerk, useSignIn } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 interface IProps {
   id: string;
@@ -23,8 +24,9 @@ export default function SlideItem(props: IProps) {
   const { loading, buyOrder, priceId } = useOrderStore();
   const { addToCart } = useCartStore();
   const { userId } = useAuth();
+  const clerk = useClerk();
   const imageProps = useNextSanityImage(configuredSanityClient, image);
-
+  const router = useRouter();
   return (
     <div className="focus:border-none mx-10 relative bg-slate-50 p-2 rounded-md">
       <span className="absolute top-0 right-0 bg-slate-100-400 text-[8px] border border-slate-300 p-1">
@@ -41,22 +43,32 @@ export default function SlideItem(props: IProps) {
         <p className="font-semibold">${price}</p>
         <div className="flex items-center justify-center gap-1">
           <button
-            onClick={() =>
+            onClick={() => {
+              if (!userId) {
+                clerk.openSignIn();
+                return;
+              }
               addToCart({
                 productId: id,
                 price: price,
                 quantity: 1,
                 userId: userId as string,
                 stripeProductId: stripeProductId,
-              })
-            }
+              });
+            }}
             className="bg-slate-100 border border-slate-300 p-1"
           >
             <ShoppingCart />
           </button>
           <button
             disabled={loading}
-            onClick={() => buyOrder([{ price: stripeProductId, quantity: 1 }])}
+            onClick={() => {
+              if (!userId) {
+                clerk.openSignIn();
+                return;
+              }
+              buyOrder([{ price: stripeProductId, quantity: 1 }]);
+            }}
             className="bg-slate-100 border border-slate-300 p-2 font-bold text-xs"
           >
             {priceId === stripeProductId && loading ? (
