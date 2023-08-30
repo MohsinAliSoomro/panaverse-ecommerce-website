@@ -6,7 +6,7 @@ interface Product {
 }
 export async function addToCartAPI(data: Product) {
   try {
-    const response = await fetch("http://localhost:3000/api/cart", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_API}/api/cart`, {
       method: "POST",
       body: JSON.stringify(data),
     });
@@ -20,7 +20,7 @@ export async function addToCartAPI(data: Product) {
 export async function removeToCartAPI(id: number) {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/cart?cartId=${id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL_API}/api/cart?cartId=${id}`,
       {
         method: "DELETE",
       }
@@ -34,7 +34,7 @@ export async function removeToCartAPI(id: number) {
 
 export async function fetchUserCartAPI() {
   try {
-    const response = await fetch(`http://localhost:3000/api/cart`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_API}/api/cart`, {
       method: "GET",
     });
     const result = await response.json();
@@ -50,7 +50,7 @@ interface IOrder {
 }
 export async function buyOrder(data: IOrder[]) {
   try {
-    const response = await fetch(`http://localhost:3000/api/order`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_API}/api/order`, {
       method: "POST",
       body: JSON.stringify(data),
     });

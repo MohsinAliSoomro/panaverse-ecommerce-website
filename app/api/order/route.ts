@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   const lineItems = await request.json();
   let successUrl = "";
   if (request.nextUrl.hostname === "localhost") {
-    successUrl = "http://localhost:3000/order/success";
+    successUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}/order/success`;
   }
 
   const session = await stripe.checkout.sessions.create({
