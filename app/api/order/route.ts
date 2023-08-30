@@ -7,10 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(request: NextRequest) {
   const lineItems = await request.json();
-  let successUrl = "";
-  if (request.nextUrl.hostname === "localhost") {
-    successUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}/order/success`;
-  }
+  let successUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}/order/success`;
 
   const session = await stripe.checkout.sessions.create({
     success_url: successUrl,
