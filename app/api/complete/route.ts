@@ -10,7 +10,7 @@ const endpointSecret =
 
 export async function POST(request: NextRequest) {
   console.log("Start event");
-  const body = buffer(request.body as any) as any;
+  const body = await request.text();
   console.log("after body", { body });
   const sig = request.headers.get("stripe-signature") as string;
   console.log("after sig", { sig });
