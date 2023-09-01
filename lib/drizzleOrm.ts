@@ -7,6 +7,7 @@ import {
   integer,
   timestamp,
   uniqueIndex,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { InferModel } from "drizzle-orm";
 
@@ -21,6 +22,7 @@ export const OrderTable = pgTable(
     userId: text("userid").notNull(),
     itemCount: integer("itemcount").notNull(),
     total: integer("total").notNull(),
+    isComplete:boolean("iscomplete"),
     createdAt: timestamp("createdat").defaultNow().notNull(),
   },
   (order) => {

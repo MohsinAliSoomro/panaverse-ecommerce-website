@@ -11,6 +11,7 @@ CREATE TABLE orders (
   userId TEXT NOT NULL,
   itemCount INTEGER NOT NULL,
   total INTEGER NOT NULL,
+  isComplete BOOLEAN,
   createdAt TIMESTAMP NOT NULL DEFAULT NOW()
 );
 ```
