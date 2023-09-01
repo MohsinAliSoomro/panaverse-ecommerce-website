@@ -13,13 +13,15 @@ export async function POST(request: NextRequest) {
   const sig = request.headers.get("stripe-signature") as string;
   console.log("after sig", { sig });
   let event;
-  console.log("after event", { event });
   try {
     event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
+    console.log("INSIDE A EVENT", { event });
   } catch (err) {
+    console.log("INSIDE A EVENT CATCH ERROR", { err });
     NextResponse.json(`Webhook Error: ${err}`);
     return;
   }
+  console.log("AFTER TRY CATCH event", { event });
   switch (event.type) {
     case "checkout.session.async_payment_failed":
       const checkoutSessionAsyncPaymentFailed = event.data.object;
