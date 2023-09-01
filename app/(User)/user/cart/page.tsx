@@ -2,12 +2,15 @@
 import CartPageItem from "@/app/components/CartPageItem";
 import { useCartStore } from "@/state/CartState";
 import { useOrderStore } from "@/state/OrdetState";
+import { useAuth, useClerk } from "@clerk/nextjs";
 import { Loader2Icon } from "lucide-react";
 
 export default function Page() {
   const { cartItemProducts, carts, removeToCart, shipping, total } =
     useCartStore();
   const { buyOrder, loading } = useOrderStore();
+  const auth = useAuth();
+  const clerk = useClerk();
   const handleRemoveCart = (data: any) => {
     const product = carts.find((i) => i.productId === data._id);
     removeToCart(product?.id as number);
@@ -46,13 +49,17 @@ export default function Page() {
           </div>
           <button
             onClick={() => {
+              if (!auth.userId) {
+                clerk.openSignIn();
+                return;
+              }
               let response = cartItemProducts.map((item: any) => {
                 return {
                   price: item.stripeProductId,
                   quantity: 1,
                 };
               });
-              buyOrder(response);
+              buyOrder(response, auth.userId);
             }}
             className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600 relative"
           >

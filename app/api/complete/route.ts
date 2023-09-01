@@ -1,28 +1,24 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
-import { headers } from "next/headers";
-// import { buffer } from "micro";
-
+import { OrderTable, db } from "@/lib/drizzleOrm";
+import { auth } from "@clerk/nextjs";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2022-11-15",
 });
 
 export async function POST(request: NextRequest) {
   try {
+    const { userId } = auth();
     const body = await request.text();
-    const endpointSecret =
-      "whsec_7a050b012603667a044f6f49e493c9f759e84e289ed6ec2ec975091b3feba649";
-    const sig = headers().get("stripe-signature") as string;
+    const endpointSecret = process.env.STRIPE_SECRET_WEBHOOK_KEY!;
+    const sig = request.headers.get("stripe-signature") as string;
     let event: Stripe.Event;
     try {
       event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
     } catch (err) {
-      //   console.log("INSIDE A EVENT CATCH ERROR", { err });
       return NextResponse.json(`Webhook Error: ${err}`);
     }
-    // console.log("✅ Success:", event.id);
-    // console.log("AFTER TRY CATCH event", { event });
-    console.log({ event });
+
     switch (event.type) {
       case "checkout.session.async_payment_failed":
         const checkoutSessionAsyncPaymentFailed = event.data.object;
@@ -37,15 +33,42 @@ export async function POST(request: NextRequest) {
         break;
       case "checkout.session.completed":
         const checkoutSessionCompleted = event.data.object;
-        console.log({ checkoutSessionCompleted });
-
+        const response1 = await db
+          .insert(OrderTable)
+          .values({
+            userId: userId as string,
+            itemCount: 1,
+            total: 0,
+            isComplete: true,
+          })
+          .returning();
+        console.log({ response1 });
         // Then define and call a function to handle the event checkout.session.completed
         break;
-      // ... handle other event types
+      case "payment_intent.created":
+        console.log("payment intent create", event.data);
+        // ... handle other event types
+        break;
+      case "payment_intent.succeeded":
+        console.log("payment intent success", event.data);
+        break;
+      case "charge.succeeded":
+        const response = await db
+          .insert(OrderTable)
+          .values({
+            userId: userId as string,
+            itemCount: 1,
+            total: 0,
+            isComplete: true,
+          })
+          .returning();
+        console.log("charge success intent success", response);
+
+        break;
       default:
         console.log(`Unhandled event type ${event.type}`);
     }
-    NextResponse.json("RESPONSE EXECUTE");
+    return NextResponse.json("RESPONSE EXECUTE");
   } catch (error) {
     return NextResponse.json(
       {
@@ -54,6 +77,6 @@ export async function POST(request: NextRequest) {
         },
       },
       { status: 405 }
-    ).headers.set("Allow", "POST");
+    );
   }
 }

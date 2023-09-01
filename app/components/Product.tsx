@@ -58,7 +58,7 @@ export default function Product({ item }: IProps) {
                 clerk.openSignIn();
                 return;
               }
-              buyOrder([{ price: item.stripeProductId, quantity: 1 }]);
+              buyOrder([{ price: item.stripeProductId, quantity: 1 }], userId);
             }}
             className="bg-slate-100 border border-slate-300 p-2 font-bold text-xs"
           >

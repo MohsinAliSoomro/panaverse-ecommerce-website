@@ -10,16 +10,16 @@ interface IOrder {
   loading: boolean;
   error: string | null;
   priceId: string;
-  buyOrder: (data: IOrderData[]) => void;
+  buyOrder: (data: IOrderData[], userId: string) => void;
 }
 
 export const useOrderStore = create<IOrder>((set) => ({
   loading: false,
   error: null,
   priceId: "",
-  buyOrder: async (data: IOrderData[]) => {
+  buyOrder: async (data: IOrderData[], userId: string) => {
     set({ loading: true, priceId: data[0].price });
-    await buyOrder(data);
+    await buyOrder(data, userId);
     set({ loading: false, priceId: "" });
   },
 }));

@@ -6,10 +6,13 @@ interface Product {
 }
 export async function addToCartAPI(data: Product) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_API}/api/cart`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL_API}/api/cart`,
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+      }
+    );
     const result = await response.json();
     return result;
   } catch (error) {
@@ -34,9 +37,12 @@ export async function removeToCartAPI(id: number) {
 
 export async function fetchUserCartAPI() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_API}/api/cart`, {
-      method: "GET",
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL_API}/api/cart`,
+      {
+        method: "GET",
+      }
+    );
     const result = await response.json();
     return result;
   } catch (error) {
@@ -48,12 +54,16 @@ interface IOrder {
   price: string;
   quantity: number;
 }
-export async function buyOrder(data: IOrder[]) {
+export async function buyOrder(data: IOrder[], userId: string) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_API}/api/order`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    console.log({userId})
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL_API}/api/order`,
+      {
+        method: "POST",
+        body: JSON.stringify({ lineItems: data, userId }),
+      }
+    );
     const result = await response.json();
     window.open(result.url, "_blank");
     return result;

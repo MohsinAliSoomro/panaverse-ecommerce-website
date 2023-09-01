@@ -1,12 +1,14 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
+import { OrderTable, db } from "@/lib/drizzleOrm";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2022-11-15",
 });
 
 export async function POST(request: NextRequest) {
-  const lineItems = await request.json();
+  const { lineItems, userId } = await request.json();
+  console.log({ lineItems, userId });
   let successUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}/order/success`;
 
   const session = await stripe.checkout.sessions.create({
