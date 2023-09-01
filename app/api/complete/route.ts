@@ -10,15 +10,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("Start event");
     const body = await request.text();
     const endpointSecret = "whsec_7a050b012603667a044f6f49e493c9f759e84e289ed6ec2ec975091b3feba649";
-    console.log("after body", { body });
-    const sig = headers().get("stripe-signature")!;
+    const sig = headers().get("stripe-signature") as string;
     console.log("after sig", { sig });
     let event: Stripe.Event;
     try {
-      if (!sig || !endpointSecret) return;
       event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
       console.log("INSIDE A EVENT", { event });
     } catch (err) {
