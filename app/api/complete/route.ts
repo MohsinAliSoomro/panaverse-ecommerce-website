@@ -6,14 +6,13 @@ import { headers } from "next/headers";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2022-11-15",
 });
-// const endpointSecret =
-//   "whsec_7a050b012603667a044f6f49e493c9f759e84e289ed6ec2ec975091b3feba649";
 
-const endpointSecret = "we_1NlXbAFxAUz38nIubf8ERTl3";
+
 export async function POST(request: NextRequest) {
   try {
     console.log("Start event");
     const body = await request.text();
+    const endpointSecret = "whsec_7a050b012603667a044f6f49e493c9f759e84e289ed6ec2ec975091b3feba649";
     console.log("after body", { body });
     const sig = headers().get("stripe-signature")!;
     console.log("after sig", { sig });
