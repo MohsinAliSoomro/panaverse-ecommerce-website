@@ -1,6 +1,11 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 
+export const config = {
+    api: {
+      bodyParser: false,
+    },
+  }
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2022-11-15",
 });
@@ -8,7 +13,7 @@ const endpointSecret =
   "whsec_7a050b012603667a044f6f49e493c9f759e84e289ed6ec2ec975091b3feba649";
 export async function POST(request: NextRequest) {
   console.log("Start event");
-  const body = await request.arrayBuffer() as any;
+  const body = await request.body as any;
   console.log("after body", { body });
   const sig = request.headers.get("stripe-signature") as string;
   console.log("after sig", { sig });
