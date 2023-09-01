@@ -8,7 +8,7 @@ const endpointSecret =
   "whsec_7a050b012603667a044f6f49e493c9f759e84e289ed6ec2ec975091b3feba649";
 export async function POST(request: NextRequest) {
   console.log("Start event");
-  const body = request.body as any;
+  const body = await request as any;
   console.log("after body", { body });
   const sig = request.headers.get("stripe-signature") as string;
   console.log("after sig", { sig });
