@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     } catch (err) {
       return NextResponse.json(`Webhook Error: ${err}`);
     }
-
+    console.log(event);
     switch (event.type) {
       case "checkout.session.async_payment_failed":
         const checkoutSessionAsyncPaymentFailed = event.data.object;
@@ -30,17 +30,17 @@ export async function POST(request: NextRequest) {
         // Then define and call a function to handle the event checkout.session.async_payment_succeeded
         break;
       case "checkout.session.completed":
-        const checkoutSessionCompleted = event.data.object;
+        const checkoutSessionCompleted: any = event.data.object;
         const response1 = await db
           .insert(OrderTable)
           .values({
-            userId: "user1",
+            userId: checkoutSessionCompleted?.metadata.userId,
             itemCount: 1,
-            total: 0,
+            total: checkoutSessionCompleted?.amount_total as any,
             isComplete: true,
           })
           .returning();
-        console.log({ response1 });
+        console.log({ response1, checkoutSessionCompleted });
         // Then define and call a function to handle the event checkout.session.completed
         break;
       case "payment_intent.created":
@@ -51,16 +51,7 @@ export async function POST(request: NextRequest) {
         console.log("payment intent success", event.data);
         break;
       case "charge.succeeded":
-        const response = await db
-          .insert(OrderTable)
-          .values({
-            userId: "user1",
-            itemCount: 1,
-            total: 0,
-            isComplete: true,
-          })
-          .returning();
-        console.log("charge success intent success", response);
+        console.log("charge success intent success");
 
         break;
       default:

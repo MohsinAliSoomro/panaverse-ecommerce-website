@@ -16,6 +16,9 @@ export async function POST(request: NextRequest) {
     line_items: lineItems,
     mode: "payment",
     billing_address_collection: "required",
+    metadata: {
+      userId: userId,
+    },
   });
 
   return NextResponse.json(session);
