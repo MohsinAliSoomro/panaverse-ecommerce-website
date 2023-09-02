@@ -1,14 +1,12 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 import { OrderTable, db } from "@/lib/drizzleOrm";
-import { auth } from "@clerk/nextjs";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2022-11-15",
 });
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = auth();
     const body = await request.text();
     const endpointSecret = process.env.STRIPE_SECRET_WEBHOOK_KEY!;
     const sig = request.headers.get("stripe-signature") as string;
@@ -36,7 +34,7 @@ export async function POST(request: NextRequest) {
         const response1 = await db
           .insert(OrderTable)
           .values({
-            userId: userId as string,
+            userId: "user1",
             itemCount: 1,
             total: 0,
             isComplete: true,
@@ -56,7 +54,7 @@ export async function POST(request: NextRequest) {
         const response = await db
           .insert(OrderTable)
           .values({
-            userId: userId as string,
+            userId: "user1",
             itemCount: 1,
             total: 0,
             isComplete: true,
