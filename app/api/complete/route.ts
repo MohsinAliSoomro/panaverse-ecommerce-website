@@ -1,19 +1,15 @@
 import Stripe from "stripe";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { OrderTable, db } from "@/lib/drizzleOrm";
 import { headers } from "next/headers";
-const stripe = new Stripe(
-  "sk_test_51LXr3nFxAUz38nIu1ucHVuuOeNImHnzB4Wxnqw8mL9eol06EZoUNvmnU1gvfsivjarJdUsnxfxfW5xLru5ukRFuM00Bp4Oqcje",
-  {
-    apiVersion: "2022-11-15",
-    typescript: true,
-  }
-);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2022-11-15",
+  typescript: true,
+});
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
-  const endpointSecret =
-    "whsec_7a050b012603667a044f6f49e493c9f759e84e289ed6ec2ec975091b3feba649";
+  const endpointSecret = process.env.STRIPE_SECRET_WEBHOOK_KEY!;
   const sig = headers().get("stripe-signature") as string;
   console.log({ sig, endpointSecret });
   let event: Stripe.Event;
@@ -21,7 +17,9 @@ export async function POST(request: NextRequest) {
     event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
   } catch (err) {
     console.log({ err });
-    return NextResponse.json(`Webhook Error: ${err}`);
+    return new Response(`Webhook Error: ${err}`, {
+      status: 400,
+    });
   }
   // const session = event.data.object as Stripe.Checkout.SessionsResource;
 
@@ -55,5 +53,7 @@ export async function POST(request: NextRequest) {
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
-  return NextResponse.json({ message: "RESPONSE EXECUTE", data: event });
+  return new Response("RESPONSE EXECUTE", {
+    status: 200,
+  });
 }
