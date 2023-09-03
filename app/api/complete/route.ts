@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 import { OrderTable, db } from "@/lib/drizzleOrm";
+import { headers } from "next/headers";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2022-11-15",
 });
@@ -9,14 +10,15 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.text();
     const endpointSecret = process.env.STRIPE_SECRET_WEBHOOK_KEY!;
-    const sig = request.headers.get("stripe-signature") as string;
+    const sig = headers().get("stripe-signature") as string;
+    console.log({ sig });
     let event: Stripe.Event;
     try {
       event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
     } catch (err) {
       return NextResponse.json(`Webhook Error: ${err}`);
     }
-    console.log(event);
+    console.log({ event });
     switch (event.type) {
       case "checkout.session.async_payment_failed":
         const checkoutSessionAsyncPaymentFailed = event.data.object;
@@ -59,6 +61,7 @@ export async function POST(request: NextRequest) {
     }
     return NextResponse.json("RESPONSE EXECUTE");
   } catch (error) {
+    console.log({ error });
     return NextResponse.json(
       {
         error: {
