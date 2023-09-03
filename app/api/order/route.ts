@@ -8,7 +8,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(request: NextRequest) {
   const { lineItems, userId } = await request.json();
-  console.log({ lineItems, userId });
   let successUrl = `${process.env.NEXT_PUBLIC_BASE_URL_API}/order/success`;
 
   const session = await stripe.checkout.sessions.create({

@@ -56,7 +56,6 @@ interface IOrder {
 }
 export async function buyOrder(data: IOrder[], userId: string) {
   try {
-    console.log({userId})
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL_API}/api/order`,
       {

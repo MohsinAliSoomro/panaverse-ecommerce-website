@@ -45,12 +45,10 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("cartId");
-  console.log("API", id);
   const response = await db
     .delete(CartTable)
     .where(eq(CartTable.id, Number(id)))
     .returning();
 
-  console.log({ response });
   return NextResponse.json(response);
 }

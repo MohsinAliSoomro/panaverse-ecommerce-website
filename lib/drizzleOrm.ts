@@ -57,5 +57,4 @@ export type NewOrder = InferModel<typeof OrderTable, "insert">; // insert type
 
 export const getCartTable = async () => {
   const selectResult = await db.select().from(CartTable);
-  console.log("Results", selectResult);
 };

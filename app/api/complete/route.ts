@@ -11,28 +11,23 @@ export async function POST(request: NextRequest) {
   const body = await request.text();
   const endpointSecret = process.env.STRIPE_SECRET_WEBHOOK_KEY!;
   const sig = headers().get("stripe-signature") as string;
-  console.log({ sig, endpointSecret });
   let event: Stripe.Event;
   try {
     event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
   } catch (err) {
-    console.log({ err });
     return new Response(`Webhook Error: ${err}`, {
       status: 400,
     });
   }
   // const session = event.data.object as Stripe.Checkout.SessionsResource;
 
-  console.log({ event });
   switch (event.type) {
     case "checkout.session.async_payment_failed":
       const checkoutSessionAsyncPaymentFailed = event.data.object;
-      console.log({ checkoutSessionAsyncPaymentFailed });
       // Then define and call a function to handle the event checkout.session.async_payment_failed
       break;
     case "checkout.session.async_payment_succeeded":
       const checkoutSessionAsyncPaymentSucceeded = event.data.object;
-      console.log({ checkoutSessionAsyncPaymentSucceeded });
 
       // Then define and call a function to handle the event checkout.session.async_payment_succeeded
       break;
@@ -47,7 +42,6 @@ export async function POST(request: NextRequest) {
           isComplete: true,
         })
         .returning();
-      console.log({ response1 });
       // Then define and call a function to handle the event checkout.session.completed
       break;
     default:

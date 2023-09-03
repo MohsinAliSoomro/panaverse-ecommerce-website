@@ -4,41 +4,53 @@ import { Loader2Icon, ShoppingCart } from "lucide-react";
 import { configuredSanityClient } from "../lib/utils";
 import { useOrderStore } from "@/state/OrdetState";
 import { useCartStore } from "@/state/CartState";
-import { useAuth, useClerk, useSignIn } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-
+import { useAuth, useClerk } from "@clerk/nextjs";
+import Link from "next/link";
 interface IProps {
   id: string;
   image: string;
   name: string;
   price: number;
   stripeProductId: string;
+  slug: {
+    current: string;
+  };
   categories: [
     {
       title: string;
     }
   ];
 }
+const truncate = (text: string) => {
+  let length = 15;
+  if (text.length > length) {
+    return `${text.slice(0, length)}...`;
+  }
+  return text;
+};
 export default function SlideItem(props: IProps) {
-  const { image, name, price, categories, stripeProductId, id } = props;
+  const { image, name, price, categories, stripeProductId, id, slug } = props;
   const { loading, buyOrder, priceId } = useOrderStore();
   const { addToCart } = useCartStore();
   const { userId } = useAuth();
   const clerk = useClerk();
   const imageProps = useNextSanityImage(configuredSanityClient, image);
-  const router = useRouter();
   return (
-    <div className="focus:border-none mx-10 relative bg-slate-50 p-2 rounded-md">
+    <div className="focus:border-none mx-1 lg:mx-10 relative bg-slate-50 lg:p-2 rounded-md">
       <span className="absolute top-0 right-0 bg-slate-100-400 text-[8px] border border-slate-300 p-1">
         {categories[0]?.title}
       </span>
-      <Image
-        {...imageProps}
-        style={{ width: "100%", height: "20rem", objectFit: "contain" }}
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        alt={name}
-      />
-      <p className="font-semibold text-xl">{name}</p>
+      <Link href={`/product/${slug.current}`}>
+        <Image
+          {...imageProps}
+          style={{ width: "100%", height: "20rem", objectFit: "contain" }}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          alt={name}
+        />
+      </Link>
+      <Link href={`/product/${slug.current}`} className="font-semibold text-xl">
+        {truncate(name)}
+      </Link>
       <div className="flex justify-between items-center">
         <p className="font-semibold">${price}</p>
         <div className="flex items-center justify-center gap-1">

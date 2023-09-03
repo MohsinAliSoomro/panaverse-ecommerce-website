@@ -16,6 +16,7 @@ async function getData() {
     slug,
     mainImage,
     stripeProductId,
+    slug,
     categories[]->{title}
   }`);
   return res;

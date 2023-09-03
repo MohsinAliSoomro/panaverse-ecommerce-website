@@ -73,7 +73,6 @@ export const useCartStore = create<ICart>((set) => ({
   },
   addToCart: async (data: IProduct) => {
     const response = await addToCartAPI(data);
-    console.log({ response });
     if (!response) return;
     if (response?.exist) {
       toast("Product already exists in cart", {
